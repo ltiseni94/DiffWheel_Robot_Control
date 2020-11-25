@@ -20,6 +20,5 @@ Gateway:	192.168.0.1
 execute the two launch file:
 
 roslaunch state_machine sm_startup.launch
-roslaunch jetson_csi_cam jetson_csi_cam.launch
 
 Finally run the code on your remote pc to teleoperate

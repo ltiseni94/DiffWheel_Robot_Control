@@ -9,7 +9,7 @@ set the IP Address of your wifi board:
 
 IP: 		192.168.64.100
 Sub: 		255.255.192.0
-Gateway:	192.168.64.1
+Gateway:	192.168.64.3
 
 set the IP Address of your ethernet board:
 

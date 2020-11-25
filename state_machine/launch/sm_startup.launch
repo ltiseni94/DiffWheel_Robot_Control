@@ -2,7 +2,7 @@
 
 <launch>
 	<include file="$(find joystick_to_twist)/launch/joy_launcher.launch"/>
-	<include file="$(find jetson_csi_cam)/launch/jetson_csi_cam.launch"/>
+	<include file="$(find jetson_csi_cam)/jetson_csi_cam.launch"/>
 	<node name="udp_sender" pkg="udp_controller" type="UDP_Sender.py" args='' />
 	<node name="state_machine" pkg="state_machine" type="main_sm.py" args='' output="screen" />
 </launch> 

@@ -92,11 +92,11 @@ while not rospy.is_shutdown():
     # update odom_positions
     # odom += v_rel * dt
     
-    print_counter2 += 1
-    if print_counter2 > 100:
-        print("vel = ", v_rel)
+    #print_counter2 += 1
+    #if print_counter2 > 100:
+    #    print("vel = ", v_rel)
     #    print("odom = ", odom * np.array([1.0, 180.0/np.pi]))
-        print_counter2 = 0
+    #   print_counter2 = 0
     
     # publish tf message
     # handle_robot_pose(odom)

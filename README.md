@@ -94,6 +94,7 @@ Fundamental Packages for Covid Light Robot Control
     1) Add the following lines at the end of .bashrc file (hidden file in home directory)
 
         export ROS_MASTER_URI=http://ipaddress:port
+        
         export ROS_IP=ipaddress
 
     where ipaddress is the wifi board ip address (example: 192.168.1.100) and the port is the one used by ROS for communication (standard port: 11311)

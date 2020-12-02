@@ -6,4 +6,8 @@ joystick_drivers/
 turtlebot3/
 turtlebot3_msgs/
 *.pyc
+ydlidar_ros-master/
+image_common/
+gscam/
+
 

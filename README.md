@@ -47,7 +47,9 @@ Fundamental Packages for Covid Light Robot Control
 			cd catkin_ws/src
 			git clone https://github.com/ros-drivers/gscam
 
-		modify the file ./gscam/Makefile with this string: EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
+	modify the file ./gscam/Makefile with this string:
+	
+			EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
 
     
     2) image_common:
@@ -99,10 +101,10 @@ Fundamental Packages for Covid Light Robot Control
 
 - Build workspace:
 
-        $ rosdep install --from-paths ~/catkin_ws --ignore-src --rosdistro=ROSmelodic
-        $ catkin_make
-        $ source ~/.bashrc
-        $ source devel/setup.bash
+        rosdep install --from-paths ~/catkin_ws --ignore-src --rosdistro=ROSmelodic
+        catkin_make
+        source ~/.bashrc
+        source devel/setup.bash
 
 
 
@@ -110,6 +112,6 @@ Fundamental Packages for Covid Light Robot Control
 
 execute the launch file:
 
-        $ roslaunch state_machine sm_startup.launch
+        roslaunch state_machine sm_startup.launch
 
 Finally run the code on your remote pc to teleoperate (use the DiffWheel_Robot_Teleop package).

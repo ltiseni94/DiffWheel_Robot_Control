@@ -1,26 +1,34 @@
 # Full guide to install the package on the robot
 
-- ## Requirements
+- ## Hardware Requirements
 
 	- D.W. Platform from Next Generation Robotics srl (add website)
+	
+	- 1 YD Lidar
+	
+	- 1 Camera connected through CSI (Camera Serial Interface)
+	
+	- 2 Realsense D435i (optional)
 
 - ## Configuring PC
 
 	It is needed to:
 	
-	1. Install CUDA and NVIDIA drivers
+	1. Install Ubuntu 18.04.5 LTD
 	
-	2. Install ROS
+	2. Install CUDA and NVIDIA drivers
 	
-	3. Build Opencv with CUDA enabled
+	3. Install ROS
 	
-	4. Install Realsense SDK
+	4. Build Opencv with CUDA enabled (optional) 
 	
-	5. Build RTABMAP
+	5. Install Realsense SDK (optional)
 	
-	6. Install Realsense-ROS wrapper
+	6. Build RTABMAP (optional)
+	
+	7. Install Realsense-ROS wrapper (optional)
 		
-	To do so, you can follow this guides, based on the kind of pc you are using:
+	To do so, you can follow these guides, based on the kind of pc you are using:
 	
 	- **Nvidia Jetson Xavier NX**
 		

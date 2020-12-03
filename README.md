@@ -14,7 +14,7 @@
 
 	It is needed to:
 	
-	1. Install Ubuntu 18.04.5 LTD
+	1. Install Ubuntu 18.04.5 LTS
 	
 	2. Install CUDA and NVIDIA drivers
 	
@@ -34,7 +34,7 @@
 		
 		https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Xavier-NX-Setup-Guide
 		
-	- **Ubuntu Desktop 18.04.5 LTD with NVIDIA GTX or RTX**
+	- **Ubuntu Desktop 18.04.5 LTS with NVIDIA GTX or RTX**
 		
 		https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Ubuntu-Desktop-Setup-Guide
 

@@ -139,7 +139,7 @@ int main(int argc, char **argv){
 	{	
 	 	if(twist_ref.linear.x > 0)
 		{
-			twist_ref.linear.x = 0; //Daniele
+			twist_ref.linear.x = 0; //Daniele Prova 2
 		}
 	}
 	cmd_vel_publisher.publish(twist_ref);

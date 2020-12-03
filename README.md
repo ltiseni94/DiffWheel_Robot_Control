@@ -49,7 +49,7 @@
 
 	modify the file ./gscam/Makefile with this string:
 	
-	EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
+		EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
 
     
     2. **image_common**:

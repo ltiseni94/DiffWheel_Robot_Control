@@ -22,11 +22,11 @@
 		
 	To do so, you can follow this guides, based on the kind of pc you are using:
 	
-		- **Nvidia Jetson Xavier NX**
+	- **Nvidia Jetson Xavier NX**
 		
 				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Xavier-NX-Setup-Guide
 		
-		- **Ubuntu Desktop 18.04.5 LTD with NVIDIA GTX or RTX**
+	- **Ubuntu Desktop 18.04.5 LTD with NVIDIA GTX or RTX**
 		
 				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Ubuntu-Desktop-Setup-Guide
 

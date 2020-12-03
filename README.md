@@ -1,49 +1,46 @@
-Fundamental Packages for Covid Light Robot Control
+# Full guide to install the package on the robot
 
-- # Install ROS melodic
-    
-    
-    1. setup your sources.list:
-    
-			$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-            
-                	
-    2. setup your keys:
-    
-			$ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-    
-    
-    3. Installation:
-    
-			$ sudo apt update
-			$ sudo apt install ros-melodic-desktop
-    
-    
-	4. Environment Setup:
-       
-			$ echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
-    
-    
-    5. Dependencies:
-    
-			$ sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
-    
-    
-    6. Initialize rosdep:
-    
-			$ sudo apt install python-rosdep
-			$ sudo rosdep init
-			$ rosdep update
+- ## Requirements
+
+	- D.W. Platform from Next Generation Robotics srl (add website)
+
+- ## Configuring PC
+
+	It is needed to:
+	
+	1. Install CUDA and NVIDIA drivers
+	
+	2. Install ROS
+	
+	3. Build Opencv with CUDA enabled
+	
+	4. Install Realsense SDK
+	
+	5. Build RTABMAP
+	
+	6. Install Realsense-ROS wrapper
+		
+	To do so, you can follow this guides, based on the kind of pc you are using:
+	
+		- **Nvidia Jetson Xavier NX**
+		
+				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Xavier-NX-Setup-Guide
+		
+		- **Ubuntu Desktop 18.04.5 LTD with NVIDIA GTX or RTX**
+		
+				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Ubuntu-Desktop-Setup-Guide
 
 
+- ## Create a brand new catkin workspace 
 
-- # Create a Catkin workspace (to do section)
+		$ mkdir -p ~/catkin_ws/src
+		$ cd ~/catkin_ws/
+		$ catkin_make
+		$ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc 
+		$ source ~/.bashrc
 
 
-- # Optional: Install Opencv4, realsense, and RTABMAP: follow andrea boscolo camiletto guide.
-
-
-- # Other packages that you need to install:
+- ## Install Needed Packages
 
     1. gscam:
 
@@ -82,7 +79,7 @@ Fundamental Packages for Covid Light Robot Control
 
 
 
-- # Configuration:
+- ## Bash and IP Configuration:
 
     1. Add the following lines at the end of .bashrc file (hidden file in home directory):
 
@@ -105,7 +102,7 @@ Fundamental Packages for Covid Light Robot Control
 
 
 
-- # Build workspace:
+- ## Build the workspace:
 
         $ rosdep install --from-paths ~/catkin_ws --ignore-src --rosdistro=ROSmelodic
         $ catkin_make
@@ -114,12 +111,12 @@ Fundamental Packages for Covid Light Robot Control
 
 
 
-- # Usage:
+- ## Usage:
 
-Adjust Robot Parameters in the file: ./udp_controller/src/kinematics_matrix.py
+	1. Adjust Robot Parameters in the file: ./udp_controller/src/kinematics_matrix.py
 
-execute the launch file:
+	2. Execute the launch file:
 
-        $ roslaunch state_machine sm_startup.launch
+			$ roslaunch state_machine sm_startup.launch
 
-Finally run the code on your remote pc to teleoperate (use the DiffWheel_Robot_Teleop package).
+	3. Finally launch starteleop.launch on the remote pc (see DiffWheel_Robot_Teleop package).

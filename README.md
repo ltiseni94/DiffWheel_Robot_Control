@@ -24,11 +24,11 @@
 	
 	- **Nvidia Jetson Xavier NX**
 		
-				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Xavier-NX-Setup-Guide
+		https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Xavier-NX-Setup-Guide
 		
 	- **Ubuntu Desktop 18.04.5 LTD with NVIDIA GTX or RTX**
 		
-				https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Ubuntu-Desktop-Setup-Guide
+		https://github.com/abcamiletto/XavierNX-setup-realsense/wiki/Ubuntu-Desktop-Setup-Guide
 
 
 - ## Create a brand new catkin workspace 
@@ -49,7 +49,7 @@
 
 	modify the file ./gscam/Makefile with this string:
 	
-		EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
+	EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
 
     
     2. **image_common**:

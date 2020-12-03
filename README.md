@@ -42,7 +42,7 @@
 
 - ## Install Needed Packages
 
-    1. gscam:
+    1. **gscam**:
 
 			$ cd catkin_ws/src
 			$ git clone https://github.com/ros-drivers/gscam
@@ -52,13 +52,13 @@
 		EXTRA_CMAKE_FLAGS = -DUSE_ROSBUILD:BOOL=1 -DGSTREAMER_VERSION_1_x=On
 
     
-    2. image_common:
+    2. **image_common**:
     
 			$ cd catkin_ws/src
 			$ git clone https://github.com/ros-perception/image_common
     
     
-    3. ydlidar_ros-master:
+    3. **ydlidar_ros-master**:
 	
 			$ cd catkin_ws/src
 			$ git clone -b master --single-branch https://github.com/YDLIDAR/ydlidar_ros
@@ -71,7 +71,7 @@
 	in case of errors ignore them.
 	
 	
-    4. joy:
+    4. **joy**:
     
 			$ sudo apt-get update
     		$ sudo apt-get install ros-melodic-joy

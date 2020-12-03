@@ -116,6 +116,8 @@ Fundamental Packages for Covid Light Robot Control
 
 - Usage:
 
+Adjust Robot Parameters in the file: ./udp_controller/src/kinematics_matrix.py
+
 execute the launch file:
 
         $ roslaunch state_machine sm_startup.launch

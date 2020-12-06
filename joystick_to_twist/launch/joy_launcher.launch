@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-	<!--<node name="joy_input" pkg="joy" type="joy_node" args=''>
-		<param name="autorepeat_rate" value="100.0" />
-	</node>-->
-	<node name="joy_to_twist" pkg="joystick_to_twist" type="joy_to_twist.py" args='' />
+	
+	<arg name="local_joy"/>
+	<arg name="my_max_lin_vel"/>
+	<arg name="my_max_ang_vel"/>
+	
+	<group if="$(arg local_joy)">
+		<node name="joy_input" pkg="joy" type="joy_node" args=''>
+			<param name="autorepeat_rate" value="100.0" />
+		</node>
+	</group>
+
+	<node name="joy_to_twist" pkg="joystick_to_twist" type="joy_to_twist.py" args=''>
+		<param name="max_lin_vel" value="$(arg my_max_lin_vel)"/>
+		<param name="max_ang_vel" value="$(arg my_max_ang_vel)"/>
+	</node>
+
 </launch> 

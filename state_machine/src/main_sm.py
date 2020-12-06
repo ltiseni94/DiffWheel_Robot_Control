@@ -19,7 +19,7 @@ r1, l1, Triangle = [0] * 3
 state_mode = 0
 system_enable = 0
 lamp_enable = 0
-vel_reduction_coeff = 0.2
+vel_reduction_coeff = rospy.get_param('vel_reduction_coeff',0.2)
 supervised_twist = Twist()
 auto_twist = Twist()
 joy_twist = Twist()
@@ -29,12 +29,11 @@ State_String=String(data='disabled')
 state_names = ['disabled','joystick','supervised','auto']
 watchdog_max=50
 watchdog_cnt=watchdog_max
-dist_coeff = Float32(data=0);
 
 ######### SUBSCRIBER CALLBACKS #########
 
 def callback_lidar(data):
-	global dist_coeff, supervised_twist
+	global supervised_twist
 	dist_coeff = data
 	supervised_twist=joy_twist
 	if dist_coeff<0.01:

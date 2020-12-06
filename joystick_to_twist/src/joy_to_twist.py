@@ -6,8 +6,8 @@ from sensor_msgs.msg import Joy
 from math import sqrt
 import numpy as np
 
-max_vel = 0.25
-max_ang = np.pi/5.0
+max_vel = rospy.get_param('max_lin_vel',0.25)
+max_ang = rospy.get_param('max_ang_vel',np.pi/5.0)
 
 ######### WATCHDOG ON /joy #########
 # watchdog max value (cycles)

@@ -35,7 +35,7 @@ watchdog_cnt=watchdog_max
 
 def callback_lidar(data):
     global supervised_twist
-    dist_coeff = data
+    dist_coeff = data.data
     supervised_twist=joy_twist
     if dist_coeff<0.01:
         if (supervised_twist.linear.x>=0):
@@ -85,8 +85,8 @@ def state_decider():
     watchdog_cnt-=1
     if watchdog_cnt<0:
         lamp_enable=0
-        system_enable=0
-        state_mode=0
+        #system_enable=0
+        #state_mode=0
         return state_names[0]
     else:
         if system_enable != 1:

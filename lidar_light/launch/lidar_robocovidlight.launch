@@ -26,6 +26,6 @@
     
     </node>
 	
-	<!--node name="lidar_supervisor"	pkg="lidar_light"	type="lidar_supervisor"				args=""/-->
+	<node name="lidar_supervisor"	pkg="lidar_light"	type="lidar_supervisor"				args=""/>
 
 </launch>

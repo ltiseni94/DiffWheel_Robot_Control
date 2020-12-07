@@ -39,7 +39,7 @@ float lidar_angle_rad;
 float min_frontal_dist = 1.0;
 float scaling_const = FRONTAL_DIST_THR_2/5000;
 int mode = 0;
-dist_coeff.data=0;
+
 
 void lidar_callback(const sensor_msgs::LaserScan::ConstPtr& msg) {
 	
@@ -86,9 +86,9 @@ void lidar_callback(const sensor_msgs::LaserScan::ConstPtr& msg) {
 	if(min_frontal_dist<=FRONTAL_DIST_THR){
 		dist_coeff.data=0;
 	} else if ((min_frontal_dist>FRONTAL_DIST_THR)&&(min_frontal_dist<=FRONTAL_DIST_THR_2)) {
-		dist_coeff.data= (min_frontal_dist-FRONTAL_DIST_THR)/(FRONTAL_DIST_THR_2-FRONTAL_DIST_THR)
+		dist_coeff.data= (min_frontal_dist-FRONTAL_DIST_THR)/(FRONTAL_DIST_THR_2-FRONTAL_DIST_THR);
 	} else if (min_frontal_dist>FRONTAL_DIST_THR_2){
-		dist_coeff.data=1.0
+		dist_coeff.data=1.0;
 	} else {
 		dist_coeff.data=0;
 	}

@@ -13,8 +13,9 @@
 	</group>
 
 	<node name="joy_to_twist" pkg="joystick_to_twist" type="joy_to_twist.py" args=''>
-		<param name="max_lin_vel" value="$(arg my_max_lin_vel)"/>
-		<param name="max_ang_vel" value="$(arg my_max_ang_vel)"/>
+		<param name="max_lin_vel" 	value="$(arg my_max_lin_vel)"/>
+		<param name="max_ang_vel" 	value="$(arg my_max_ang_vel)"/>
+		<param name="local_joy"		value="$(arg local_joy)"/>
 	</node>
 
 </launch> 

@@ -19,7 +19,8 @@ r1, l1, Triangle = [0] * 3
 state_mode = 0
 system_enable = 0
 lamp_enable = 0
-vel_reduction_coeff = rospy.get_param('vel_reduction_coeff',0.2)
+vel_reduction_coeff = rospy.get_param('/state_machine/vel_reduction_coeff',0.2)
+local_joy=rospy.get_param('state_machine/local_joy',False)
 supervised_twist = Twist()
 auto_twist = Twist()
 joy_twist = Twist()
@@ -33,20 +34,20 @@ watchdog_cnt=watchdog_max
 ######### SUBSCRIBER CALLBACKS #########
 
 def callback_lidar(data):
-	global supervised_twist
-	dist_coeff = data
-	supervised_twist=joy_twist
-	if dist_coeff<0.01:
-		if (supervised_twist.linear.x>=0):
-			supervised_twist.linear.x = 0
-			supervised_twist.angular.z = vel_reduction_coeff*supervised_twist.angular.z
-		else:
-			supervised_twist.linear.x = vel_reduction_coeff*supervised_twist.linear.x
-			supervised_twist.angular.z = vel_reduction_coeff*supervised_twist.angular.z
-	else
-		if (supervised_twist.linear.x>=0):
-			supervised_twist.linear.x = dist_coeff*supervised_twist.linear.x
-		
+    global supervised_twist
+    dist_coeff = data
+    supervised_twist=joy_twist
+    if dist_coeff<0.01:
+        if (supervised_twist.linear.x>=0):
+            supervised_twist.linear.x = 0
+            supervised_twist.angular.z = vel_reduction_coeff*supervised_twist.angular.z
+        else:
+            supervised_twist.linear.x = vel_reduction_coeff*supervised_twist.linear.x
+            supervised_twist.angular.z = vel_reduction_coeff*supervised_twist.angular.z
+    else:
+        if (supervised_twist.linear.x>=0):
+            supervised_twist.linear.x = dist_coeff*supervised_twist.linear.x
+
 def callback_auto(data):
     global auto_twist
     auto_twist = data
@@ -58,12 +59,15 @@ def callback_joy(data):
 def callback(data):
     global r1, l1, Triangle, state_mode, system_enable, lamp_enable, watchdog_cnt
     watchdog_cnt=watchdog_max
-
     # Remote Joystick Config
-    r1_new = data.buttons[5]
-    l1_new = data.buttons[4]
-    Triangle_new=data.buttons[2]
-    
+    if local_joy:
+        r1_new = data.buttons[7]
+        l1_new = data.buttons[6]
+        Triangle_new=data.buttons[4]
+    else:
+        r1_new = data.buttons[5]
+        l1_new = data.buttons[4]
+        Triangle_new=data.buttons[2]
     if r1_new > r1:
         state_mode = (state_mode + 1) % 3
     if l1_new > l1:
@@ -122,45 +126,45 @@ class Joystick(smach.State):
         State_String='Executing state JOYSTICK'
         stringpub.publish(State_String)
         rate=rospy.Rate(100)
-		cnt=0
+        cnt=0
         while state_decider() == 'joystick' and not rospy.is_shutdown():
             udp_message.twist = joy_twist
-			if cnt<10:
-				udp_message.write_motor=True
-			else:
-				udp_message.write_motor=False
+            if cnt<10:
+                udp_message.write_motor=True
+            else:
+                udp_message.write_motor=False
             udp_message.motor_enable=True
             udp_message.lamp_enable=lamp_enable
             udp_message.addon=False
             pub.publish(udp_message)
-			cnt++
+            cnt+=1
             rate.sleep()
         return state_decider()
 		
 # define state supervised
 class Supervised(smach.State):
-	def __init__(self):
+    def __init__(self):
         smach.State.__init__(self, outcomes=['disabled', 'auto'])
-	
-	def execute(self, userdata):
-		rospy.loginfo('Executing state Supervised')
-		State_String='Executing state SUPERVISED'
-		stringpub.publish(State_String)
-		rate=rospy.Rate(100)
-		cnt=0
-		while state_decider() == 'supervised' and not rospy.is_shutdown():
-			udp_message.twist = supervised_twist
-			if cnt<10:
-				udp_message.write_motor=True
-			else:
-				udp_message.write_motor=False
-			udp_message.motor_enable=True
-			udp_message.lamp_enable=lamp_enable
-			udp_message.addon=False
-			pub.publish(udp_message)
-			cnt++
-			rate.sleep()
-		return state_decider()
+    
+    def execute(self, userdata):
+        rospy.loginfo('Executing state Supervised')
+        State_String='Executing state SUPERVISED'
+        stringpub.publish(State_String)
+        rate=rospy.Rate(100)
+        cnt=0
+       	while state_decider() == 'supervised' and not rospy.is_shutdown():
+            udp_message.twist = supervised_twist
+            if cnt<10:
+                udp_message.write_motor=True
+            else:
+                udp_message.write_motor=False
+            udp_message.motor_enable=True
+            udp_message.lamp_enable=lamp_enable
+            udp_message.addon=False
+            pub.publish(udp_message)
+            cnt+=1
+            rate.sleep()
+        return state_decider()
         
 # define state Auto
 class Auto(smach.State):
@@ -172,18 +176,18 @@ class Auto(smach.State):
         State_String='Executing state AUTO'
         stringpub.publish(State_String)
         rate=rospy.Rate(100)
-		cnt=0
+        cnt=0
         while state_decider() == 'auto' and not rospy.is_shutdown():
             udp_message.twist = auto_twist
-			if cnt<10:
-				udp_message.write_motor=True
-			else:
-				udp_message.write_motor=False
+            if cnt<10:
+                udp_message.write_motor=True
+            else:
+                udp_message.write_motor=False
             udp_message.motor_enable=True
             udp_message.lamp_enable=lamp_enable
             udp_message.addon=False
             pub.publish(udp_message)
-			cnt++
+            cnt+=1
             rate.sleep()
         return state_decider()      
 
@@ -207,14 +211,14 @@ with sm:
     # Add states to the container
     smach.StateMachine.add('DISABLED', Disabled(), 
                            transitions={'joystick':'JOYSTICK',
-										'supervised':'SUPERVISED',
+                                        'supervised':'SUPERVISED',
                                         'auto':'AUTO'})
     smach.StateMachine.add('JOYSTICK', Joystick(), 
                            transitions={'disabled':'DISABLED', 
                                         'supervised':'SUPERVISED'})
-	smach.StateMachine.add('SUPERVISED', Supervised(),
-	                       transitions=('disabled':'DISABLED'),
-										'auto':'AUTO')
+    smach.StateMachine.add('SUPERVISED', Supervised(),
+                           transitions={'disabled':'DISABLED',
+                                        'auto':'AUTO'})
     smach.StateMachine.add('AUTO', Auto(), 
                            transitions={'disabled':'DISABLED', 
                                         'joystick':'JOYSTICK'})

@@ -6,8 +6,9 @@ from sensor_msgs.msg import Joy
 from math import sqrt
 import numpy as np
 
-max_vel = 0.25
-max_ang = np.pi/5.0
+max_vel = rospy.get_param('/joy_to_twist/max_lin_vel', 0.25)
+max_ang = rospy.get_param('/joy_to_twist/max_ang_vel', np.pi/5.0)
+local_joy= rospy.get_param('/joy_to_twist/local_joy',False)
 
 ######### WATCHDOG ON /joy #########
 # watchdog max value (cycles)
@@ -17,15 +18,12 @@ watchdog_cnt = 0;
 
 def callback(data):
     global max_vel, max_ang, watchdog_cnt, watchdog_max
-    
-    # # Local Joystick Config
-    # x = max_vel*data.axes[1]
-    # theta = max_ang*data.axes[2]
-    
-    # Remote Joystick Config
-    x = max_vel*data.axes[1]
-    theta = data.axes[3] * max_ang
-    
+    if local_joy:
+        x = max_vel * data.axes[1]
+        theta = max_ang * data.axes[2]
+    else:
+        x = max_vel * data.axes[1]
+        theta = max_ang * data.axes[3]
     twist = Twist()
     twist.linear.x = x
     twist.angular.z = theta

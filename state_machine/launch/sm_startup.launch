@@ -3,22 +3,35 @@
 <launch>
 	
 	<arg name="use_local_joy" 		default="false"/>
-	<arg name="set_lin_vel"			default="0.2500"/>
-	<arg name="set_ang_vel"			default="0.6283"/>
+	<arg name="enable_streaming"		default="true"/>
+	<arg name="max_lin_vel"			default="0.2500"/>
+	<arg name="min_lin_vel"			default="-0.1000"/>
+	<arg name="max_ang_vel"			default="0.5"/>
+	<arg name="max_lin_acc"			default="0.5000"/>
+	<arg name="max_ang_acc"			default="1.256"/>
+	
 
 	<include file="$(find joystick_to_twist)/launch/joy_launcher.launch">
 		<arg name="local_joy" value="$(arg use_local_joy)"/>
-		<arg name="my_max_lin_vel" value="$(arg set_lin_vel)"/>
-		<arg name="my_max_ang_vel" value="$(arg set_ang_vel)"/>
+		<arg name="my_max_lin_vel" value="$(arg max_lin_vel)"/>
+		<arg name="my_max_ang_vel" value="$(arg max_ang_vel)"/>
 	</include>
 	
-	<include file="$(find jetson_csi_cam)/jetson_csi_cam.launch"/>
+	<group if="$(arg enable_streaming)">
+		<include file="$(find jetson_csi_cam)/jetson_csi_cam.launch"/>
+	</group>	
+	
 	<include file="$(find lidar_light)/launch/lidar_robocovidlight.launch"/>
 	
 	<node name="udp_sender" 	pkg="udp_controller" 	type="UDP_Sender.py" 		args='' />
 	<node name="udp_receiver" 	pkg="udp_controller" 	type="UDP_Receiver.py" 		args='' />
 	<node name="state_machine" 	pkg="state_machine" 	type="main_sm.py" 		args='' output="screen">
-		<param name="vel_reduction_coeff" value="0.2"/>
-		<param name="local_joy"		  value="$(arg use_local_joy)" />
+		<param name="vel_reduction_coeff" 	value="0.2"/>
+		<param name="local_joy"		  	value="$(arg use_local_joy)"	/>
+		<param name="max_lin_vel"		value="$(arg max_lin_vel)"	/>
+		<param name="max_ang_vel"		value="$(arg max_ang_vel)"	/>
+		<param name="min_lin_vel"		value="$(arg min_lin_vel)"	/>
+		<param name="max_lin_acc"		value="$(arg max_lin_acc)"	/>
+		<param name="max_ang_acc"		value="$(arg max_ang_acc)"	/>
 	</node>
 </launch> 

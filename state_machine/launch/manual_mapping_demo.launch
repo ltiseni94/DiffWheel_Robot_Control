@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+	
+<include file="$(find state_machine)/launch/sm_startup.launch">
+	<arg name="use_local_joy" 	value="true"/>
+	<arg name="enable_lidar" 	value="false"/>	
+</include>
+
+<include file="$(find state_machine)/launch/init.launch"/>
+<include file="$(find state_machine)/launch/filter_imu.launch"/>
+<include file="$(find state_machine)/launch/D435i_rtabmap.launch"/>
+
+</launch>

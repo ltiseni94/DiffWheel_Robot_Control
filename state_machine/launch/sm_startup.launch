@@ -4,11 +4,12 @@
 	
 	<arg name="use_local_joy" 		default="false"/>
 	<arg name="enable_streaming"		default="true"/>
+	<arg name="enable_lidar"		default="true"/>
 	<arg name="max_lin_vel"			default="0.2500"/>
 	<arg name="min_lin_vel"			default="-0.1000"/>
-	<arg name="max_ang_vel"			default="0.5"/>
+	<arg name="max_ang_vel"			default="0.5000"/>
 	<arg name="max_lin_acc"			default="0.5000"/>
-	<arg name="max_ang_acc"			default="1.256"/>
+	<arg name="max_ang_acc"			default="1.0000"/>
 	
 
 	<include file="$(find joystick_to_twist)/launch/joy_launcher.launch">
@@ -21,8 +22,10 @@
 		<include file="$(find jetson_csi_cam)/jetson_csi_cam.launch"/>
 	</group>	
 	
-	<include file="$(find lidar_light)/launch/lidar_robocovidlight.launch"/>
-	
+	<group if="$(arg enable_lidar)">
+		<include file="$(find lidar_light)/launch/lidar_robocovidlight.launch"/>
+	</group>	
+
 	<node name="udp_sender" 	pkg="udp_controller" 	type="UDP_Sender.py" 		args='' />
 	<node name="udp_receiver" 	pkg="udp_controller" 	type="UDP_Receiver.py" 		args='' />
 	<node name="state_machine" 	pkg="state_machine" 	type="main_sm.py" 		args='' output="screen">

@@ -4,11 +4,21 @@
 	
 <include file="$(find state_machine)/launch/sm_startup.launch">
 	<arg name="use_local_joy" 	value="true"/>
-	<arg name="enable_lidar" 	value="false"/>	
+	<arg name="enable_lidar" 	value="false"/>
+	<arg name="max_lin_vel"		value="0.2500"/>
+	<arg name="min_lin_vel"		value="-0.1000"/>
+	<arg name="max_ang_vel"		value="0.5000"/>
+	<arg name="max_lin_acc"		value="0.5000"/>
+	<arg name="max_ang_acc"		value="1.0000"/>	
+	
 </include>
 
-<include file="$(find state_machine)/launch/init.launch"/>
-<include file="$(find state_machine)/launch/filter_imu.launch"/>
-<include file="$(find state_machine)/launch/D435i_rtabmap.launch"/>
+<node pkg="tf2_ros" type="static_transform_publisher" name ="base_to_odom"
+    args="0.0 0.0 0.0 0.0 0.0 0.0 base_link odom" >
+</node>
+
+<!--include file="$(find state_machine)/launch/init.launch"/-->
+<!--include file="$(find state_machine)/launch/filter_imu.launch"/-->
+<!--include file="$(find state_machine)/launch/D435i_rtabmap.launch"/-->
 
 </launch>

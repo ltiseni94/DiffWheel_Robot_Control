@@ -7,9 +7,8 @@ import rospy
 import socket
 import numpy as np
 from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistWithCovarianceStamped
 from kinematics_matrix import inv_jacobian, encoder_constant
-# from udp_controller.srv import reset_odom, reset_odomResponse
-# import tf
 
 ######### DEFINE "GLOBAL" VARIABLES AND PARAMETERS #########
 
@@ -56,8 +55,10 @@ sock.bind((personal_IP, personal_port))
 
 # ros init
 rospy.init_node('udp_receiver', anonymous=True)
-pub = rospy.Publisher('odom_wheels', Twist, queue_size=10)
+pub1 = rospy.Publisher('odom_wheels', Twist, queue_size=10)
+pub2 = rospy.Publisher('twist_n_covariance_wheels', TwistWithCovarianceStamped, queue_size=10)
 twist=Twist()
+tw_cov = TwistWithCovarianceStamped()
 # ros set rate
 r = rospy.Rate(RATE)
 
@@ -82,13 +83,26 @@ while not rospy.is_shutdown():
             print(wh_speeds_enc * 30.0 / np.pi)
             print(enable_input)
             print_counter = 0
-        '''
+    '''
     #   CALCULATE ODOMETRY
     # calculate linear and angular relative speed of the robot
     v_rel = np.matmul(inv_jacobian, wh_speeds_enc)
     twist.linear.x=v_rel[0]
-    twist.angular.z=v_rel[1]
-    pub.publish(twist)
+    twist.angular.z=v_rel[1]   
+    pub1.publish(twist)
+    
+    ### create twist message with stamp and covariance for robot loclization ###
+    tw_cov.header.stamp = rospy.Time.now()
+    tw_cov.header.frame_id = "odom"
+    # tw_cov.header.child_frame_id = "base_link"
+    
+    tw_cov.twist.twist.linear.x=v_rel[0]
+    tw_cov.twist.twist.angular.z=v_rel[1] 
+    tw_cov.twist.covariance[0] = 1e-6
+    tw_cov.twist.covariance[35] = 1e-6
+    
+    pub2.publish(tw_cov)
+    
     # update odom_positions
     # odom += v_rel * dt
     

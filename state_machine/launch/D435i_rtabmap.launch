@@ -2,7 +2,7 @@
 
 <launch>
 
-	<include file="$(find rtabmap_ros)/launch/rtabmap.launch">
+	<include file="$(find state_machine)/launch/rtabmap.launch">
 		<arg name="rtabmapviz" 			value="false"/>
 		<arg name="rviz" 				value="true"/>
 		<arg name="rviz_cfg"			value="$(find state_machine)/rviz_conf.rviz"/>

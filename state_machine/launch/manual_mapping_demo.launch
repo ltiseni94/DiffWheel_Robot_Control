@@ -3,7 +3,7 @@
 <launch>
 	
 <include file="$(find state_machine)/launch/sm_startup.launch">
-	<arg name="use_local_joy" 	value="false"/>
+	<arg name="use_local_joy" 	value="true"/>
 	<arg name="enable_lidar" 	value="false"/>
 	<arg name="max_lin_vel"		value="0.2500"/>
 	<arg name="min_lin_vel"		value="-0.1000"/>

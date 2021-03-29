@@ -1,4 +1,4 @@
-CREATE A NEW BRANCH AND WORK ON IT
+CREATE A NEW BRANCH AND WORK ON IT AAAAA
 	
 1) Open terminal in your local repository.
 	

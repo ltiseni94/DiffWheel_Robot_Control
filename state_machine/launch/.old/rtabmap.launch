@@ -185,6 +185,7 @@
           <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
           <remap from="rgbd_image"      to="$(arg rgbd_topic_relay)"/>
           <remap from="odom"            to="$(arg odom_topic)"/>
+          <!--remap from="odom"            to="rgbd_odom"/-->
       
           <param name="frame_id"                    type="string" value="$(arg frame_id)"/>
           <param name="odom_frame_id"               type="string" value="$(arg vo_frame_id)"/>
@@ -297,7 +298,8 @@
       <remap from="user_data_async"        to="$(arg user_data_async_topic)"/>
       <remap from="gps/fix"                to="$(arg gps_topic)"/>
       <remap from="tag_detections"         to="$(arg tag_topic)"/>
-      <remap from="odom"                   to="$(arg odom_topic)"/>
+      <!--remap from="odom"                   to="$(arg odom_topic)"/-->
+      <remap from="odom"                   to="/robot_local/filtered_odom"/>
       <remap from="imu"                    to="$(arg imu_topic)"/>
       
       <!-- localization mode -->
@@ -341,7 +343,9 @@
   </group>
   
   <!-- Visualization RVIZ -->
-  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_cfg)"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find state_machine)/urdf/lightrobot.urdf" />
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_cfg)" />
+  
   <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb" output="$(arg output)">
     <remap if="$(arg stereo)" from="left/image"        to="$(arg left_image_topic_relay)"/>
     <remap if="$(arg stereo)" from="right/image"       to="$(arg right_image_topic_relay)"/>

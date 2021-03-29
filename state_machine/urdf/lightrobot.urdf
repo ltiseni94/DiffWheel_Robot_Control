@@ -1,0 +1,15 @@
+<robot name="platform">
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 -1.57" xyz="-0.04 0 0.13"/>
+      <geometry>
+        <mesh filename="package://state_machine/urdf/meshes/covid_light.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.40 0.40 0.90 0.8" />
+      </material>
+    </visual>
+  </link>
+</robot>

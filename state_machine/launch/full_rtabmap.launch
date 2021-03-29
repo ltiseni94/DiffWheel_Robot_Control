@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+<arg name="use_robot_local"                 default="false"/>
+
+<include file="$(find state_machine)/launch/sm_startup.launch">
+	<arg name="use_local_joy" 	value="true"/>
+	<arg name="enable_lidar" 	value="false"/>
+	<arg name="max_lin_vel"		value="0.2500"/>
+	<arg name="min_lin_vel"		value="-0.1000"/>
+	<arg name="max_ang_vel"		value="0.5000"/>
+	<arg name="max_lin_acc"		value="0.5000"/>
+	<arg name="max_ang_acc"		value="1.0000"/>
+	<arg name="robot_local"     value="$(arg use_robot_local)"/>	
+</include>
+
+<include file="$(find lidar_light)/launch/full_setup_lidar.launch"/>
+<include file="$(find state_machine)/launch/init.launch"/>
+<include file="$(find state_machine)/launch/filter_imu.launch"/>
+
+<!-- If flag, launch localization pkg -->
+<group if="$(arg use_robot_local)">
+  <node name="imu_repub" 	pkg="state_machine" 	type="imu_cov_Republisher.py" 		args='' />
+  <include file="$(find localization)/launch/localization.launch"/>
+</group>
+
+<include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
+	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
+</include>
+  
+</launch>

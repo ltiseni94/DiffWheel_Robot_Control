@@ -3,13 +3,14 @@
 <launch>
 	
 	<arg name="use_local_joy" 		default="false"/>
-	<arg name="enable_streaming"		default="true"/>
+	<arg name="enable_streaming"    default="true"/>
 	<arg name="enable_lidar"		default="true"/>
 	<arg name="max_lin_vel"			default="0.2500"/>
 	<arg name="min_lin_vel"			default="-0.1000"/>
 	<arg name="max_ang_vel"			default="0.5000"/>
 	<arg name="max_lin_acc"			default="0.5000"/>
 	<arg name="max_ang_acc"			default="1.0000"/>
+	<arg name="robot_local"         default="false"/>
 	
 
 	<include file="$(find joystick_to_twist)/launch/joy_launcher.launch">
@@ -27,7 +28,9 @@
 	</group>	
 
 	<node name="udp_sender" 	pkg="udp_controller" 	type="UDP_Sender.py" 		args='' />
-	<node name="udp_receiver" 	pkg="udp_controller" 	type="UDP_Receiver.py" 		args='' />
+	<node name="udp_receiver" 	pkg="udp_controller" 	type="UDP_Receiver.py" 		args='' >
+	    <param name="robot_local" value="$(arg robot_local)"/>
+	</node>
 	<node name="state_machine" 	pkg="state_machine" 	type="main_sm.py" 		args='' output="screen">
 		<param name="vel_reduction_coeff" 	value="0.2"/>
 		<param name="local_joy"		  	value="$(arg use_local_joy)"	/>

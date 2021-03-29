@@ -2,6 +2,9 @@
 
 <launch>
 
+<arg name="use_robot_local"                 default="false"/>
+<arg name="debug"                           default="false"/>
+
 <include file="$(find state_machine)/launch/sm_startup.launch">
 	<arg name="use_local_joy" 	value="true"/>
 	<arg name="enable_lidar" 	value="false"/>
@@ -9,11 +12,23 @@
 	<arg name="min_lin_vel"		value="-0.1000"/>
 	<arg name="max_ang_vel"		value="0.5000"/>
 	<arg name="max_lin_acc"		value="0.5000"/>
-	<arg name="max_ang_acc"		value="1.0000"/>	
+	<arg name="max_ang_acc"		value="1.0000"/>
+	<arg name="robot_local"     value="$(arg use_robot_local)"/>	
 </include>
 
 <include file="$(find lidar_light)/launch/full_setup_lidar.launch"/>
 <include file="$(find state_machine)/launch/init.launch"/>
 <include file="$(find state_machine)/launch/filter_imu.launch"/>
 
+	
+	<!--node name="base_to_map_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.0 0.0 0.0 0 0 0 base_link map" /-->
+	
+	<!--node name="map_to_odom_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.0 0.0 0.0 0 0 0 map odom" /-->
+
+<group if="$(arg debug)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_map_tf"
+        args="0.0 0.0 0.0 0.0 0.0 0.0 odom map">
+    </node>
+</group>
+  
 </launch>

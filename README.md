@@ -129,7 +129,7 @@
 
 	3. Finally launch starteleop.launch on the remote pc (see DiffWheel_Robot_Teleop package).
 
-- ## rtabmap usage:
+- ## Rtabmap usage:
 
 	1. Execute the launch file:
 

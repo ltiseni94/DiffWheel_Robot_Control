@@ -16,6 +16,4 @@
    	<remap from="/imu/data" 		to="/rtabmap/imu"/>
 </node>
 
-<node name="imu_covariance_republisher" 	pkg="state_machine" 	type="imu_cov_Republisher.py" 		args='' />
-
 </launch>

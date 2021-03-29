@@ -21,6 +21,7 @@
 
 <!-- If flag, launch localization pkg -->
 <group if="$(arg use_robot_local)">
+  <node name="imu_repub" 	pkg="state_machine" 	type="imu_cov_Republisher.py" 		args='' />
   <include file="$(find localization)/launch/localization.launch"/>
 </group>
 

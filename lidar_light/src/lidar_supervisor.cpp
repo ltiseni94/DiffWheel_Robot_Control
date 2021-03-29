@@ -94,6 +94,9 @@ void lidar_callback(const sensor_msgs::LaserScan::ConstPtr& msg) {
 	}
 	scan_msg.intensities[point_mid] = FRONTAL_DIST_THR_2/scaling_const; //fondoscala
 	
+	ros::Duration delay(0.07);
+	scan_msg.header.stamp -= delay;
+	
 	lidar_publisher.publish(scan_msg);
 	coeff_publisher.publish(dist_coeff);
 }

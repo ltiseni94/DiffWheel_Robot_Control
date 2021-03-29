@@ -17,6 +17,7 @@ from kinematics_matrix import inv_jacobian, encoder_constant
 
 ######### DEFINE "GLOBAL" VARIABLES AND PARAMETERS #########
 
+ROBOT_LOCAL = rospy.get_param('/udp_receiver/robot_local', False)
 wh_speeds_enc = np.zeros(2, np.float32)
 input_mask = encoder_constant * np.array([-1.0, 1.0], np.float32)
 v_rel = np.array([0.0, 0.0], np.float32)   # [m/s], [m/s], [1/s]
@@ -28,11 +29,12 @@ N = (int)(RATE/pub_rate)
 ######### CUSTOM CLASSES #########
 
 class RobotOdom():
-    def __init__(self, rate=RATE):
+    def __init__(self, rate=RATE, robot_local=ROBOT_LOCAL):
         self.x=0
         self.y=0
         self.th=0
         self.dt=1.0/rate
+        self.robot_local=robot_local
         self.publisher = rospy.Publisher('odom_wheels', Odometry, queue_size=10)
         self.tfbroadcaster = tf.TransformBroadcaster() # create a tf
         self.twist_local = TwistWithCovariance()
@@ -41,7 +43,7 @@ class RobotOdom():
         self.twist_local.covariance[14]=1e-6
         self.twist_local.covariance[21]=1e-6
         self.twist_local.covariance[28]=1e-6
-        self.twist_local.covariance[35]=1e-4
+        self.twist_local.covariance[35]=1e-4 # the imu one is 1e-2
         self.odom_msg = Odometry()
         
     def update_twist(self, speed_array):
@@ -71,17 +73,26 @@ class RobotOdom():
         self.odom_msg.pose.pose.orientation.w=q[3]
         self.odom_msg.pose.covariance[0]=1e-4
         self.odom_msg.pose.covariance[7]=1e-4
-        self.odom_msg.pose.covariance[35]=1e-3
+        self.odom_msg.pose.covariance[35]=3e-3
         self.odom_msg.twist=self.twist_local
         
         self.publisher.publish(self.odom_msg)
         
-        self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
-                q,                  # load quaternion
-                now,   # send current time
-                "base_link",        # to
-                "odom")             # from
-
+        if not (self.robot_local):
+            self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
+                    q,                  # load quaternion
+                    now,   # send current time
+                    "base_link",        # to
+                    "odom")             # from
+        
+        if False:
+            self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
+                        q,                  # load quaternion
+                        now,                # send current time
+                        "base_link_debug",  # to
+                        "map")              # from
+        
+    
 ######### SET LOCAL SOCKET IP ADDRESS AND UDP PORT #########
 personal_IP = "192.168.0.100"
 personal_port = 11111
@@ -106,10 +117,12 @@ while not rospy.is_shutdown():
     robot_odom.update_twist(v_rel)
     robot_odom.update_odom()
     
-    if i == N:
-        robot_odom.publish_odom_msg()
-        i = 0
-    i+=1
+    # if i == N:
+    #     robot_odom.publish_odom_msg()
+    #     i = 0
+    # i+=1
     
-    r.sleep()
+    robot_odom.publish_odom_msg()
+    
+    #r.sleep()
 

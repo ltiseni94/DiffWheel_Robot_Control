@@ -8,6 +8,8 @@
 	
 	<node name="base_to_laser_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.16 0.0 0.08 0 0 3.141592654 base_link lidar_link" />
 	
+	<!--node name="base_to_laser_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.16 0.0 0.08 0 0 3.141592654 base_link lidar_link" /-->
+	
 	<node name="ydlidar_node"       pkg="ydlidar_ros"   type="ydlidar_node"                 output="screen" respawn="false" >
         
         <param name="port"              type="string"   	value="/dev/ttyUSB0"/>  
@@ -21,8 +23,8 @@
         <param name="range_min"         type="double"   	value="0.1" />
         <param name="range_max"         type="double"   	value="10.0" />
         <param name="ignore_array"      type="string"   	value="" />
-        <param name="frequency"         type="double"   	value="5"/>
-        <param name="samp_rate"         type="int"      	value="4"/>
+        <param name="frequency"         type="double"   	value="10"/>
+        <param name="samp_rate"         type="int"      	value="10"/>
     
     </node>
 	

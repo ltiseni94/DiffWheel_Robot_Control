@@ -2,7 +2,7 @@
 
 <launch>
 
-<arg name="localization"                  default="true"/>
+<arg name="localization"                  default="false"/>
 <arg name="save_map"                      default="true"/>
 <arg name="map_name"                      default="/home/xavier/maps_rtabmap/map.db"/>
 <arg name="3d"                            default="true"/>
@@ -11,15 +11,10 @@
 <arg if="$(arg localization)"             name="args" default="--Optimizer/GravitySigma 0.3"/>
 
 <!-- custom - select odom just from wheels (default) or from robot localization -->
-<arg name="use_robot_local"               default="false"/>
-<arg unless="$(arg use_robot_local)"     name="odom_topic"  default="/odom_wheels"/>
-<arg if="$(arg use_robot_local)" name="odom_topic"  default="/localization/odom_filtered"/>
+<arg name="use_robot_local"             default="false"/>
+<arg unless="$(arg use_robot_local)"    name="odom_topic"  default="/odom_wheels"/>
 <!-- if use_robot_local is true, set the odom topic from the output of robot local -->
-
-<!-- If flag, launch localization pkg -->
-<group if="$(arg use_robot_local)">
-  <include file="$(find localization)/launch/localization.launch"/>
-</group>
+<arg if="$(arg use_robot_local)"        name="odom_topic"  default="/localization/odom_filtered"/>
 
 <group ns="rtabmap">
 

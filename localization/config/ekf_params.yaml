@@ -1,4 +1,4 @@
-frequency: 5
+frequency: 100
 sensor_timeout: 0.4
 two_d_mode: true
       
@@ -10,8 +10,8 @@ world_frame: odom           # Defaults to the value of odom_frame if unspecified
       
 print_diagnostics: true
 
-twist0: /twist_n_covariance_wheels
-odom0: /rtabmap/odom
+odom0: /odom_wheels        # wheels     -> 100 Hz
+imu0:  /rtabmap/imu_cov    # camera imu -> 200 Hz
 
 #  X,        Y,      Z,
 #  roll,     pitch,  yaw,
@@ -19,26 +19,44 @@ odom0: /rtabmap/odom
 #  roll/dt,  pitch/dt,yaw/dt,
 #  X/dt2,    Y/dt2,  Z/dt2 
 
-twist0_config: [false, false, false, # wheels
+# in the frame_id of the input message 
+odom0_config: [false, false, false, 
                false, false, false, 
                true,  true,  false, 
                false, false, true, 
                false, false, false]
-
-odom0_config: [false, false, false, # wheels
-               false, false, true, 
-               true,  true,  false, 
+               
+imu0_config: [false, false, false, 
                false, false, false, 
-               false, false, false]
+               false, false, false, 
+               false, true,  false, # select the giroscope along gravity
+               false, false, false] # use the x acceleration? But it is non zero due to orientation
 
-smooth_lagged_data:  false 
-                                    
-odom0_queue_size: 20                                  
-twist0_queue_size: 20
+# if more than 1 source gives "absolute data (position/orientation)", then put just 1 and the others in differential=true mode
+                                   
+odom0_queue_size: 4
+imu0_queue_size:  8
 
-#imu0_relative: false
-#imu1_relative: false
-      
-# odom0_twist_rejection_threshold: 1.5
-# twist0_pose_rejection_threshold: 2.0
+imu0_angular_velocity_rejection_threshold: 8 # in Mahalanobis distance! sqrt(0.8*0.8*100) 
+                                             # max vel is 0.5, let's take 0.8 to be sure. Cov = 1e-2
 
+# process_noise_covariance: 
+# In general, the larger the value for Q relative to the variance for a given variable in an input message, the faster the filter will converge to the value in the measurement.
+
+process_noise_covariance: [1e-6, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    1e-6, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    1e-6, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    1e-6, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    1e-6, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    1e-6, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           
+                           0,    0,    0,    0,    0,    0,    1e-4,  0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     1e-4,  0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     1e-4, 0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    1e-4, 0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    1e-4, 0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    2e-2, 0,    0,    0,
+                           
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    1e-6, 0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    1e-6, 0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    1e-6]

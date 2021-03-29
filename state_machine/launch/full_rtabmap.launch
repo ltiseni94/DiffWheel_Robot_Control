@@ -3,7 +3,6 @@
 <launch>
 
 <arg name="use_robot_local"                 default="false"/>
-<arg name="debug"                           default="false"/>
 
 <include file="$(find state_machine)/launch/sm_startup.launch">
 	<arg name="use_local_joy" 	value="true"/>
@@ -20,15 +19,13 @@
 <include file="$(find state_machine)/launch/init.launch"/>
 <include file="$(find state_machine)/launch/filter_imu.launch"/>
 
-	
-	<!--node name="base_to_map_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.0 0.0 0.0 0 0 0 base_link map" /-->
-	
-	<!--node name="map_to_odom_pub"  pkg="tf2_ros"       type="static_transform_publisher"   args="0.0 0.0 0.0 0 0 0 map odom" /-->
-
-<group if="$(arg debug)">
-    <node pkg="tf2_ros" type="static_transform_publisher" name="base_to_map_tf"
-        args="0.0 0.0 0.0 0.0 0.0 0.0 odom map">
-    </node>
+<!-- If flag, launch localization pkg -->
+<group if="$(arg use_robot_local)">
+  <include file="$(find localization)/launch/localization.launch"/>
 </group>
+
+<include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
+	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
+</include>
   
 </launch>

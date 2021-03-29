@@ -128,3 +128,11 @@
 			$ roslaunch state_machine sm_startup.launch
 
 	3. Finally launch starteleop.launch on the remote pc (see DiffWheel_Robot_Teleop package).
+
+- ## rtabmap usage:
+
+	1. Execute the launch file:
+
+			$ roslaunch state_machine full_rtabmap.launch
+			
+	It will start the previous setup, rtabmap and, if *use_robot_local* is set true, robot localization 

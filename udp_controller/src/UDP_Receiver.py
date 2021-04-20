@@ -84,14 +84,7 @@ class RobotOdom():
                     now,   # send current time
                     "base_link_2",        # to
                     "odom")             # from
-        
-        if True:
-            self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
-                        q,                  # load quaternion
-                        now,                # send current time
-                        "base_link_debug",  # to
-                        "map")              # from
-        
+                
     
 ######### SET LOCAL SOCKET IP ADDRESS AND UDP PORT #########
 personal_IP = "192.168.0.100"

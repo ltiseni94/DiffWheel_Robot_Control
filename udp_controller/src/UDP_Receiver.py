@@ -82,7 +82,7 @@ class RobotOdom():
             self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
                     q,                  # load quaternion
                     now,   # send current time
-                    "base_link_2",        # to
+                    "base_link",        # to
                     "odom")             # from
                 
     

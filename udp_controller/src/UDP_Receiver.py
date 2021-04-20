@@ -43,7 +43,7 @@ class RobotOdom():
         self.twist_local.covariance[14]=1e-6
         self.twist_local.covariance[21]=1e-6
         self.twist_local.covariance[28]=1e-6
-        self.twist_local.covariance[35]=1e-4 # the imu one is 1e-2
+        self.twist_local.covariance[35]=2e-3 # the imu one is 1e-2
         self.odom_msg = Odometry()
         
     def update_twist(self, speed_array):
@@ -82,10 +82,10 @@ class RobotOdom():
             self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
                     q,                  # load quaternion
                     now,   # send current time
-                    "base_link",        # to
+                    "base_link_2",        # to
                     "odom")             # from
         
-        if False:
+        if True:
             self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
                         q,                  # load quaternion
                         now,                # send current time

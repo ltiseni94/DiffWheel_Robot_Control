@@ -37,8 +37,9 @@ imu0_config: [false, false, false,
 odom0_queue_size: 4
 imu0_queue_size:  8
 
-imu0_angular_velocity_rejection_threshold: 8 # in Mahalanobis distance! sqrt(0.8*0.8*100) 
-                                             # max vel is 0.5, let's take 0.8 to be sure. Cov = 1e-2
+imu0_angular_velocity_rejection_threshold: 2 # in Mahalanobis distance! sqrt(0.2*0.2*100) 
+                                             # max vel is 0.5, cov = 1e-2, dev_st = 0.1, if 
+                                             # we consider 2*dev_st=0.2, we discard 5% of measures
 
 # process_noise_covariance: 
 # In general, the larger the value for Q relative to the variance for a given variable in an input message, the faster the filter will converge to the value in the measurement.

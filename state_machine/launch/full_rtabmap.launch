@@ -25,8 +25,14 @@
   <include file="$(find localization)/launch/localization.launch"/>
 </group>
 
-<include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
+<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom_tf"
+      args="0.0 0.0 0.0 0.0 0.0 0.0 odom map">
+  </node>
+  
+<node pkg="rviz" type="rviz" name="rviz" args="-d $(find state_machine)/config/rviz_odoms.rviz"/>
+
+<!--include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
 	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
-</include>
+</include-->
   
 </launch>

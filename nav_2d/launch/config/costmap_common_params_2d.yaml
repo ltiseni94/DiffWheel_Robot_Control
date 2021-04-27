@@ -3,4 +3,4 @@
 footprint: [[ 0.24,  0.285], [0.24, -0.285], [-0.45, -0.285], [-0.45, 0.285]]
 footprint_padding: 0.02 # put 2 cm all around the robot
 
-transform_tolerance: 1.2
+transform_tolerance: 1.0 # maximum latency for receiving robot tf

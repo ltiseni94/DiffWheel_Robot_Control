@@ -1,0 +1,6 @@
+# footprint: [[ 0.36,  0.27], [-0.36,  0.27], [-0.36, -0.27], [ 0.36, -0.27]]  
+# CHANGED, maybe not centered
+footprint: [[ 0.24,  0.285], [0.24, -0.285], [-0.45, -0.285], [-0.45, 0.285]]
+footprint_padding: 0.02 # put 2 cm all around the robot
+
+transform_tolerance: 1.2

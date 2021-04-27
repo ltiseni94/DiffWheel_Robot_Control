@@ -56,7 +56,7 @@ def state_decider():
             return state_names[0]
         return state_names[state_mode + 1]
         
-def limit_twist(ref_twist, prev_twist):
+def limit_twist(ref_twist, prev_twist, filter = True):
     output_twist=ref_twist
     # Reference Twist Saturation
     if ref_twist.linear.x > max_lin_vel:
@@ -66,12 +66,13 @@ def limit_twist(ref_twist, prev_twist):
     if (abs(ref_twist.angular.z)) > max_ang_vel:
         output_twist.angular.z = max_ang_vel*ref_twist.angular.z/abs(ref_twist.angular.z)
     # Acceleration check
-    if (abs(output_twist.linear.x-prev_twist.linear.x))>(max_lin_acc*delta_t):
-        delta_sign = cmp(output_twist.linear.x-prev_twist.linear.x,0)
-        output_twist.linear.x = prev_twist.linear.x + delta_sign*delta_t*max_lin_acc
-    if (abs(output_twist.angular.z-prev_twist.angular.z))>(max_ang_acc*delta_t):
-        delta_sign = cmp(output_twist.angular.z-prev_twist.angular.z,0)
-        output_twist.angular.z = prev_twist.angular.z + delta_sign*delta_t*max_ang_acc
+    if filter:
+        if (abs(output_twist.linear.x-prev_twist.linear.x))>(max_lin_acc*delta_t):
+            delta_sign = cmp(output_twist.linear.x-prev_twist.linear.x,0)
+            output_twist.linear.x = prev_twist.linear.x + delta_sign*delta_t*max_lin_acc
+        if (abs(output_twist.angular.z-prev_twist.angular.z))>(max_ang_acc*delta_t):
+            delta_sign = cmp(output_twist.angular.z-prev_twist.angular.z,0)
+            output_twist.angular.z = prev_twist.angular.z + delta_sign*delta_t*max_ang_acc
     return output_twist
 
 
@@ -238,7 +239,7 @@ class Auto(smach.State):
         cnt=0
         while state_decider() == 'auto' and not rospy.is_shutdown():
             #udp_message.twist = auto_twist
-            udp_message.twist = limit_twist(auto_twist,cur_twist)
+            udp_message.twist = limit_twist(auto_twist, cur_twist, filter=False)
             cur_twist = udp_message.twist
             if cnt<10:
                 udp_message.write_motor=True

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>	
+  <group ns="camera">
+    <!-- for the planner -->
+    <node pkg="nodelet" type="nodelet" name="nodelet_camera" args="manager"/>
+    <node pkg="nodelet" type="nodelet" name="points_xyz_planner" args="load rtabmap_ros/point_cloud_xyz nodelet_camera">
+      <remap from="depth/image"            to="/camera/aligned_depth_to_color/image_raw"/>
+      <remap from="depth/camera_info"      to="/camera/depth/camera_info"/>
+      <remap from="cloud"                  to="cloudXYZ" />
+      <param name="decimation" type="int" value="8"/>                    
+      <param name="max_depth"  type="double" value="4.0"/>
+      <param name="voxel_size" type="double" value="0.07"/>
+    </node>
+  
+    <node pkg="nodelet" type="nodelet" name="obstacles_detection" args="load rtabmap_ros/obstacles_detection nodelet_camera">
+      <remap from="cloud" to="cloudXYZ"/>
+      <remap from="obstacles" to="/obstacles_cloud"/>
+      <remap from="ground"    to="/ground_cloud"/>
+
+      <param name="frame_id"             type="string" value="camera_link"/>		
+      <param name="map_frame_id"         type="string" value="map"/>
+      <param name="wait_for_transform"   type="bool" value="true"/>
+      <param name="Grid/MinClusterSize"     type="int" value="4"/>
+      <param name="Grid/MaxObstacleHeight" type="double" value="0.5"/>
+    </node>
+    
+    <!-- Pointcloud to laser scan  -->
+    <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+      <remap from="cloud_in" to="/obstacles_cloud"/>
+      <remap from="scan" to="/camera/scan" />
+      <rosparam>
+        target_frame: camera_link
+        transform_tolerance: 0.01
+        min_height: -0.15
+        max_height: 1.5
+        
+        angle_min: -1.5708
+        angle_max: 1.5708
+        angle_increment: 0.0087
+        scan_time: 0.3333
+        range_min: 0.15
+        range_max: 4.0
+        use_inf: true
+        
+        # concurrency_level affects number of pc queued for processing and the number of threadsused
+        # 0: Detect number of cores
+        # 1: Single threaded
+        # 2: inf : Parallelism level
+        concurrency_level: 0
+      </rosparam>
+    </node>
+  </group>
+  
+</launch>

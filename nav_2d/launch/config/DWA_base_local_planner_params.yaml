@@ -1,0 +1,59 @@
+# High level control
+planner_patience: 3.5
+controller_patience: 6.5
+clearing_rotation_allowed: true
+conservative_reset_dist: 3
+
+
+DWAPlannerROS:
+# Robot Configuration Parameters
+  max_vel_x: 0.25
+  min_vel_x: -0.00      # set low in order to move always forward
+  escape_vel: -0.10
+  
+  max_vel_y: 0.0 # CHANGED
+  min_vel_y: -0.0
+
+  max_vel_theta:  0.25
+  min_vel_theta: -0.25
+  min_in_place_vel_theta: 0.05
+
+  acc_lim_x: 0.25
+  acc_lim_y: 0.0
+  acc_lim_theta: 0.5
+
+# Goal Tolerance Parameters
+  xy_goal_tolerance: 0.1
+  yaw_goal_tolerance: 0.1
+
+  holonomic_robot: false # CHANGED
+
+# Forward Simulation Parameters
+  sim_time: 8.0
+  sim_granularity: 0.10
+  vx_samples: 5
+  vy_samples: 0
+  vtheta_samples: 15
+
+# Trajectory Scoring Parameters
+  goal_distance_bias: 32.0       # def 24
+  path_distance_bias: 32.0       # def 32
+  occdist_scale: 0.08            # def 0.01
+  heading_lookahead: 0.35
+  dwa: true
+# prefer_forward_cost_function: 8 # CHANGED. If higher, prefer forward motion
+
+  publish_cost_grid_pc: true
+  oscillation_reset_dist: 0.05
+  meter_scoring: true
+
+
+# Recovery parameters
+TrajectoryPlannerROS:
+  max_vel_theta: 0.2
+  min_in_place_vel_theta: 0.13
+
+
+NavfnROS:
+    allow_unknown: true
+    visualize_potential: true

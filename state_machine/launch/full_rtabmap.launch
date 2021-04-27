@@ -3,6 +3,7 @@
 <launch>
 
 <arg name="use_robot_local"                 default="false"/>
+<arg name="load_map"                        default="true"/>
 
 <include file="$(find state_machine)/launch/sm_startup.launch">
 	<arg name="use_local_joy" 	value="true"/>
@@ -27,6 +28,7 @@
 
 <include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
 	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
+	<arg name="localization"        value="$(arg load_map)"/>
 </include>
   
 </launch>

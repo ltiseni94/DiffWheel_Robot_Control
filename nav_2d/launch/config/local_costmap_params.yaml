@@ -1,0 +1,50 @@
+# in costmap 2d
+global_frame: map # odom # CHANGED
+robot_base_frame: base_link
+update_frequency: 1.0
+publish_frequency: 1.0
+rolling_window: true
+width: 4.5
+height: 4.5
+resolution: 0.05
+static_map: false
+origin_x: 0
+origin_y: 0
+
+plugins:
+  - {name: obstacle_layer,   type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation_layer,  type: "costmap_2d::InflationLayer"}
+
+
+inflation_layer:
+  inflation_radius: 0.9 # 2xBACKfootprint, it helps to keep the global planned path farther from obstacles
+
+
+obstacle_layer:
+  obstacle_range: 3
+  raytrace_range: 10
+  max_obstacle_height: 0.8  # just little higher than tabels
+  min_obstacle_height: 0.0
+  track_unknown_space: true
+
+  observation_sources: point_cloud_sensor1_obstacle point_cloud_sensor2_obstacle
+
+  point_cloud_sensor1_obstacle: {   # CHANGED
+    sensor_frame: lidar_link,
+    data_type: LaserScan,
+    topic: /scan,
+    expected_update_rate: 0.5,
+    marking: true,
+    clearing: true,
+    inf_is_valid: true     # da usare con msg di tipo laser scan
+  }
+  
+  point_cloud_sensor2_obstacle: {
+    sensor_frame: camera_link,
+    data_type: LaserScan,   # PointCloud2  LaserScan
+    topic: /camera/scan,    # obstacle_cloud camera/scan
+    expected_update_rate: 1.0,
+    marking: true,
+    clearing: true,
+    inf_is_valid: true
+  }

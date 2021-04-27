@@ -4,7 +4,8 @@
 
 <arg name="localization"                  default="false"/>
 <arg name="save_map"                      default="true"/>
-<arg name="map_name"                      default="/home/xavier/maps_rtabmap/map.db"/>
+<arg unless="$(arg localization)"         name="map_name" default="/home/xavier/maps_rtabmap/map.db"/>
+<arg if=    "$(arg localization)"         name="map_name" value="/home/xavier/maps_rtabmap/map_lab.db"/>
 <arg name="3d"                            default="true"/>
 <arg name="start_rviz"                    default="true"/>
 <arg unless="$(arg localization)"         name="args" default="--delete_db_on_start --Optimizer/GravitySigma 0.3"/>

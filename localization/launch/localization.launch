@@ -2,10 +2,12 @@
 
 <launch>
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">
-      <rosparam command="load" file="$(find localization)/config/ekf_params.yaml" />
+    <include file="$(find state_machine)/launch/rgbd_odometry.launch"/>
 
-    <remap from="/odometry/filtered" to="/localization/odom_filtered" />
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">
+      <rosparam command="load" file="$(find localization)/config/ekf_params_visual.yaml" />
+
+      <remap from="/odometry/filtered" to="/localization/odom_filtered" />
       
     </node>
     

@@ -73,10 +73,17 @@ class RobotOdom():
         self.odom_msg.pose.pose.orientation.w=q[3]
         self.odom_msg.pose.covariance[0]=1e-4
         self.odom_msg.pose.covariance[7]=1e-4
-        self.odom_msg.pose.covariance[35]=3e-3
+        self.odom_msg.pose.covariance[35]=1e-1
         self.odom_msg.twist=self.twist_local
         
         self.publisher.publish(self.odom_msg)
+        
+        if True:
+            self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position
+                    q,                  # load quaternion
+                    now,   # send current time
+                    "base_link_debug",        # to
+                    "wheels/odom")            # from
         
         if not (self.robot_local):
             self.tfbroadcaster.sendTransform([self.x, self.y, 0.0], # load position

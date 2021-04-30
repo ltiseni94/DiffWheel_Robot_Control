@@ -2,22 +2,18 @@
 
 <launch>
 
-<arg name="localization"                  default="false"/>
+<arg name="localization"                  default="true"/>
 <arg name="save_map"                      default="true"/>
 <arg unless="$(arg localization)"         name="map_name" default="/home/xavier/maps_rtabmap/map.db"/>
 <arg if=    "$(arg localization)"         name="map_name" value="/home/xavier/maps_rtabmap/map_lab.db"/>
 <arg name="3d"                            default="true"/>
-<arg name="start_rviz"                    default="true"/>
 <arg unless="$(arg localization)"         name="args" default="--delete_db_on_start --Optimizer/GravitySigma 0.3"/>
 <arg if="$(arg localization)"             name="args" default="--Optimizer/GravitySigma 0.3"/>
 
 <!-- custom - select odom just from wheels (default) or from robot localization -->
-<arg name="use_robot_local"             default="false"/>
-<arg unless="$(arg use_robot_local)"    name="odom_topic"  default="/odom_wheels"/>
-<!-- if use_robot_local is true, set the odom topic from the output of robot local -->
-<arg if="$(arg use_robot_local)"        name="odom_topic"  default="/localization/odom_filtered"/>
+<arg name="odom_topic"  default="/odom_wheels"/>
 
-<group ns="rtabmap">
+<group ns="rtabmap_wheels">
 
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)">
           
@@ -26,11 +22,12 @@
         <param name="subscribe_rgb" type="bool" value="false"/>
         <param name="subscribe_rgbd" type="bool" value="true"/>
         <param name="subscribe_scan" type="bool" value="true"/>
-        <param name="queue_size" type="int" value="50"/>
-          
+        <param name="queue_size" type="int" value="50"/>        
+        <param name="odom_frame_id" type="string" value="wheels/odom"/>
+        
         <remap from="odom" to="$(arg odom_topic)"/>
         <remap from="scan" to="/scan_filter"/>
-        <remap from="rgbd_image" to="rgbd_image"/>
+        <remap from="rgbd_image" to="/rtabmap/rgbd_image"/>
           
         <!-- RTAB-Map's parameters -->
         <param name="RGBD/ProximityPathMaxNeighbors"    type="string"   value="10"/>
@@ -80,5 +77,6 @@
     </node>
 
 </group>
+  
 
 </launch>

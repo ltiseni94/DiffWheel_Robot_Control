@@ -6,7 +6,7 @@ publish_tf: true
         
 odom_frame: odom            # Defaults to "odom" if unspecified
 base_link_frame: base_link  # Defaults to "base_link" if unspecified
-world_frame: odom           # Defaults to the value of odom_frame if unspecified
+world_frame: odom           # only fusing continuous position data s.a. wheels and visual
       
 print_diagnostics: true
 

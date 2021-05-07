@@ -43,5 +43,7 @@
     <param name="robot_description" command="$(find xacro)/xacro $(find state_machine)/urdf/lightrobot.urdf" />
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find state_machine)/config/rviz_conf.rviz"/>
 </group>
+
+<include file="$(find nav_2d)/launch/navigation.launch"/>    <!-- autonomous navigation -->
   
 </launch>

@@ -62,7 +62,7 @@
         <param     if="$(arg localization)"     name="Mem/IncrementalMemory" type="string" value="false"/>
         <param unless="$(arg localization)"     name="Mem/IncrementalMemory" type="string" value="true"/>
         <param name="Mem/InitWMWithAllNodes"            type="string"   value="$(arg localization)"/>
-        <param name="Rtabmap/StartNewMapOnLoopClosure"  type="string"   value="$(arg localization)"/>
+        <param name="Rtabmap/StartNewMapOnLoopClosure"  type="string"   value="$(arg localization)"/>  <!-- if false aspetta di eliminare la mappa solo dopo aver ottenuto una loop closure -->
 
         <!-- DB path -->
         <param unless="$(arg save_map)"       name="database_path"  type="string" value="~/.ros/rtabmap.db"/>

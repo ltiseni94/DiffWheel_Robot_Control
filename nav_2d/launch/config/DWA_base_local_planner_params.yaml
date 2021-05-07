@@ -39,7 +39,7 @@ DWAPlannerROS:
 # Trajectory Scoring Parameters
   goal_distance_bias: 32.0       # def 24
   path_distance_bias: 32.0       # def 32
-  occdist_scale: 0.08            # def 0.01
+  occdist_scale: 0.01            # def 0.01  evitare ostacoli
   heading_lookahead: 0.35
   dwa: true
 # prefer_forward_cost_function: 8 # CHANGED. If higher, prefer forward motion

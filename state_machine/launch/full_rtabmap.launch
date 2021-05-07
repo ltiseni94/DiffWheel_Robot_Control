@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- arg to define the localization mode -->
+
+<arg name="use_robot_local" default="false"/>   <!-- use robot_localization pkg -->
+<arg name="load_map"        default="true"/>    <!-- load (vs. create) the map -->
+<arg name="start_rviz"      default="true"/>    <!-- locally start rviz -->
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- include launchers -->
+
+<include file="$(find lidar_light)/launch/full_setup_lidar.launch"/>    <!-- lidar -->
+<include file="$(find state_machine)/launch/camera.launch"/>            <!-- camera -->
+<include file="$(find state_machine)/launch/filter_imu.launch"/>        <!-- imu filter -->
+
+<include file="$(find state_machine)/launch/sm_startup.launch">         <!-- state machine -->
+	<arg name="use_local_joy" 	value="true"/>
+	<arg name="enable_lidar" 	value="false"/>
+	<arg name="max_lin_vel"		value="0.2500"/>
+	<arg name="min_lin_vel"		value="-0.1000"/>
+	<arg name="max_ang_vel"		value="0.5000"/>
+	<arg name="max_lin_acc"		value="0.5000"/>
+	<arg name="max_ang_acc"		value="1.0000"/>
+	<arg name="robot_local"     value="$(arg use_robot_local)"/>	
+</include>
+
+<!-- If flag, launch localization pkg -->
+<group if="$(arg use_robot_local)">
+  <include file="$(find localization)/launch/localization.launch"/>
+</group>
+
+<!-- launch rtab map -->
+<include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
+	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
+	<arg name="localization"        value="$(arg load_map)"/>
+</include>
+  
+  <!-- Visualization RVIZ -->
+<group if="$(arg start_rviz)">
+    <param name="robot_description" command="$(find xacro)/xacro $(find state_machine)/urdf/lightrobot.urdf" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find state_machine)/config/rviz_conf.rviz"/>
+</group>
+
+<include file="$(find nav_2d)/launch/navigation.launch"/>    <!-- autonomous navigation -->
+  
+</launch>

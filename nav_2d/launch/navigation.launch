@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <include file="$(find nav_2d)/launch/obstacle_detection.launch"/>
+
+    <!-- move base  -->
+    <arg name="use_dwa" default="true"/>
+    
+    <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen"> 
+    <!-- why respawn true ? -->
+        <param name="base_global_planner" value="navfn/NavfnROS"/>
+        <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"  unless="$(arg use_dwa)"/>
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"  if="$(arg use_dwa)"/>
+        
+        <remap from="cmd_vel" to="/cmd_vel_auto"/>
+        <remap from="map" to="/rtabmap/grid_map"/>
+        <param name="controller_frequency" 	 value="5" />
+        
+    	<rosparam file="$(find nav_2d)/launch/config/costmap_common_params_2d.yaml" command="load" ns="global_costmap"/>
+     	<rosparam file="$(find nav_2d)/launch/config/costmap_common_params_2d.yaml" command="load" ns="local_costmap" />
+    	<rosparam file="$(find nav_2d)/launch/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
+    	<rosparam file="$(find nav_2d)/launch/config/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find nav_2d)/launch/config/base_local_planner_params.yaml" command="load"  unless="$(arg use_dwa)" />
+    	<rosparam file="$(find nav_2d)/launch/config/DWA_base_local_planner_params.yaml" command="load" if="$(arg use_dwa)" />
+    </node>
+</launch>

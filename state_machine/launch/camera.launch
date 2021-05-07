@@ -2,6 +2,21 @@
 
 <launch>
 
+<group ns="rtabmap">
+  
+  <!-- Use RGBD synchronization -->
+    <node pkg="nodelet" type="nodelet" name="rgbd_sync" args="standalone rtabmap_ros/rgbd_sync" output="screen">
+        
+        <remap from="rgb/image"         to="/camera/color/image_raw"/>
+        <remap from="depth/image"       to="/camera/aligned_depth_to_color/image_raw"/>
+        <remap from="rgb/camera_info"   to="/camera/color/camera_info"/>
+        <remap from="rgbd_image"        to="rgbd_image"/> <!-- output -->
+        <param name="approx_sync"       value="true"/> 
+    
+    </node>
+    
+</group>
+
   <!-- Cameras -->
   <include file="$(find realsense2_camera)/launch/rs_camera.launch">
     <arg name="camera" value="camera" />

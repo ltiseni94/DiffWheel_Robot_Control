@@ -1,0 +1,6 @@
+# footprint: [[ 0.36,  0.27], [-0.36,  0.27], [-0.36, -0.27], [ 0.36, -0.27]]  
+# CHANGED, maybe not centered
+footprint: [[ 0.14,  0.32], [ 0.25,  0.05], [ 0.25,  -0.05], [0.14, -0.32], [-0.41, -0.27], [-0.47, -0.10], [-0.47, 0.10], [-0.41, 0.27]]
+footprint_padding: 0.02 # put 2 cm all around the robot
+
+transform_tolerance: 1.0 # maximum latency for receiving robot tf

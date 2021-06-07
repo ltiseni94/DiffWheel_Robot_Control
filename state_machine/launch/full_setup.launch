@@ -6,7 +6,10 @@
 <!-- arg to define the localization mode -->
 
 <arg name="use_robot_local" default="false"/>   <!-- use robot_localization pkg -->
+<arg name="local"           default="true"/>    <!-- control the robot in local (or through remote computer) -->
 <arg name="load_map"        default="true"/>    <!-- load (vs. create) the map -->
+<arg name="use_rtab_map"    default="true"/>    <!-- start rtab_map -->
+
 <arg name="start_rviz"      default="true"/>    <!-- locally start rviz -->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -17,7 +20,7 @@
 <include file="$(find state_machine)/launch/filter_imu.launch"/>        <!-- imu filter -->
 
 <include file="$(find state_machine)/launch/sm_startup.launch">         <!-- state machine -->
-	<arg name="use_local_joy" 	value="true"/>
+	<arg name="use_local_joy" 	value="$(arg local)"/>
 	<arg name="enable_lidar" 	value="false"/>
 	<arg name="max_lin_vel"		value="0.2500"/>
 	<arg name="min_lin_vel"		value="-0.1000"/>
@@ -33,15 +36,25 @@
 </group>
 
 <!-- launch rtab map -->
-<include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
-	<arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
-	<arg name="localization"        value="$(arg load_map)"/>
-</include>
+<group if="$(arg use_rtab_map)">
+    <include file="$(find state_machine)/launch/only_rtabmap_setup.launch">
+	    <arg name="use_robot_local"     value="$(arg use_robot_local)"/>	
+	    <arg name="localization"        value="$(arg load_map)"/>
+    </include>
+</group>
+<!-- if not rtabmap create tf2 from map to odom -->
+<group unless="$(arg use_rtab_map)">
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom_tf"
+        args="0.0 0.0 0.0 0.0 0.0 0.0 map odom">
+    </node>
+</group>
   
   <!-- Visualization RVIZ -->
-<group if="$(arg start_rviz)">
-    <param name="robot_description" command="$(find xacro)/xacro $(find state_machine)/urdf/lightrobot.urdf" />
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find state_machine)/config/rviz_conf.rviz"/>
+<group if="$(arg local)">
+    <group if="$(arg start_rviz)">
+        <param name="robot_description" command="$(find xacro)/xacro $(find state_machine)/urdf/lightrobot.urdf" />
+        <node pkg="rviz" type="rviz" name="rviz" args="-d $(find state_machine)/config/rviz_conf.rviz"/>
+    </group>
 </group>
 
 <include file="$(find nav_2d)/launch/navigation.launch"/>    <!-- autonomous navigation -->

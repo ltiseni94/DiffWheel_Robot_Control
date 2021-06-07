@@ -135,4 +135,4 @@
 
 			$ roslaunch state_machine full_rtabmap.launch
 			
-		It will start the previous setup, rtabmap and, if *use_robot_local* is set true, robot localization 
+		It will start the previous setup, rtabmap, navigation and, if *use_robot_local* is set true, robot localization 

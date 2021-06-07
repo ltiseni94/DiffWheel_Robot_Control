@@ -135,7 +135,7 @@
 
 			$ roslaunch state_machine full_setup.launch
 			
-	2. Define the following arguments (default values in parentesis)
+	2. Define the following arguments (default values in parentheses)
 	
 	        $ use_robot_local (false)   # start robot localization
 	        $ local (true)              # control the robot locally

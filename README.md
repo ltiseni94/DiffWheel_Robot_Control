@@ -137,8 +137,8 @@
 			
 	2. Define the following arguments (default values in parentheses)
 	
-	        $ use_robot_local (false)   # start robot localization
-	        $ local (true)              # control the robot locally
-	        $ load_map (true)           # load the global map
-	        $ use_rtab_map (true)       # start rtab_map
+	        use_robot_local (false)   # start robot localization
+	        local (true)              # control the robot locally
+	        load_map (true)           # load the global map
+	        use_rtab_map (true)       # start rtab_map
 	         

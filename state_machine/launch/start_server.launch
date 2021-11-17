@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+
+        <arg name="port" value="9090"/>
+        <arg name="address" value="0.0.0.0"/>
+        <arg name="ssl" value="false"/>
+        <arg name="certfile" value=""/>
+        <arg name="keyfile" value=""/>
+        <arg name="retry_startup_delay" value="5" />
+
+        <arg name="fragment_timeout" value="600" />
+        <arg name="delay_between_messages" value="0" />
+        <arg name="max_message_size" value="None" />
+        <arg name="unregister_timeout" value="10" />
+        <arg name="websocket_external_port" value="None" />
+
+        <arg name="use_compression" value="true" />
+
+        <arg name="authenticate" value="false" />
+
+        <arg name="websocket_ping_interval" value="0" />
+        <arg name="websocket_ping_timeout" value="30" />
+        <arg name="websocket_null_origin" value="true" />
+
+        <arg name="topics_glob" value="[*]" />
+        <arg name="services_glob" value="[*]" />
+        <arg name="params_glob" value="[*]" />
+        
+        <!-- Output: screen, log -->
+        <arg name="output" value="screen" />
+
+    </include>
+
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server">
+        <param name="port" type="int" value="8080"/>
+        <param name="address" type="str" value="0.0.0.0"/>
+        <param name="server_threads" type="int" value="1"/>
+        <param name="ros_threads" type="int" value="2"/>
+    </node>
+
+</launch>

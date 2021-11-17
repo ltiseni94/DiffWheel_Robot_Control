@@ -15,7 +15,7 @@ from std_msgs.msg import String
 from std_msgs.msg import Float32
 from custom_messages.msg import ReactJoystick, RobotOdometry
 from nav_msgs.msg import Odometry
-from tf_conversions.transformations import euler_from_quaternion as efq
+from tf_conversions import transformations as tr
 
 ######### DEFINE "GLOBAL" VARIABLES AND PARAMETERS #########
 rate_hz = 20
@@ -130,17 +130,20 @@ def callback_lidar(data):
 
 def callback_throttle(data):
     global react_twist
-    react_twist.linear.x = data.y_val
+    react_twist.linear.x = max_lin_vel*data.y_val
 
 def callback_rotation(data):
     global react_twist
-    react_twist.angular.z = data.x_val
+    react_twist.angular.z = max_ang_vel*data.x_val
 
 def callback_odometry(data):
     global robot_data
     robot_data.x_pos = data.pose.pose.position.x
     robot_data.y_pos = data.pose.pose.position.y
-    _, _, robot_data.th_pos = euler_from_quaternion(data.pose.pose.orientation)
+    quat = data.pose.pose.orientation
+    _, _, robot_data.th_pos = tr.euler_from_quaternion([quat.x, quat.y, quat.z, quat.w])
+    robot_data.lin_speed = data.twist.twist.linear.x
+    robot_data.ang_speed = data.twist.twist.angular.z
 
 def callback(data):
     global r1, l1, Triangle, state_mode, system_enable, lamp_enable, watchdog_cnt
@@ -175,6 +178,7 @@ class Disabled(smach.State):
     def execute(self, userdata):
         global cur_twist, robot_data
         rospy.loginfo('Executing state Disabled')
+        robot_data.state = 'disabled'
         # State_String='Executing state DISABLED'
         rate=rospy.Rate(rate_hz)
         while state_decider() == 'disabled' and not rospy.is_shutdown():
@@ -186,9 +190,6 @@ class Disabled(smach.State):
             udp_message.addon=False
             pub.publish(udp_message)
             pub2.publish(cur_twist)
-            robot_data.state = 'disabled'
-            robot_data.lin_speed = cur_twist.linear.x
-            robot_data.ang_speed = cur_twist.angular.z
             pub3.publish(robot_data)
             rate.sleep()
         return state_decider()
@@ -258,7 +259,8 @@ class Enabled(smach.State):
     
     def execute(self, userdata):
         global cur_twist, robot_data
-        rospy.loginfo('Executing state Supervised')
+        rospy.loginfo('Executing state Enabled')
+        robot_data.state = 'enabled'
         # State_String='Executing state SUPERVISED'
         # stringpub.publish(State_String)
         rate=rospy.Rate(rate_hz)
@@ -275,9 +277,6 @@ class Enabled(smach.State):
             udp_message.addon=False
             pub.publish(udp_message)
             pub2.publish(cur_twist)
-            robot_data.state = 'enabled'
-            robot_data.lin_speed = cur_twist.linear.x
-            robot_data.ang_speed = cur_twist.angular.z
             pub3.publish(robot_data)
             cnt+=1
             rate.sleep()

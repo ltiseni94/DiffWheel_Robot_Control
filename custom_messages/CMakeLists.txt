@@ -8,10 +8,8 @@ project(custom_messages)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  message_generation
   geometry_msgs
+  message_generation
   roscpp
   rospy
   std_msgs
@@ -55,7 +53,6 @@ add_message_files(
   FILES
   ReactJoystick.msg
   RobotOdometry.msg
-#   Message1.msg
 #   Message2.msg
 )
 
@@ -74,10 +71,11 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -111,7 +109,7 @@ add_message_files(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES custom_messages
- CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs message_runtime
+ CATKIN_DEPENDS geometry_msgs message_generation roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 

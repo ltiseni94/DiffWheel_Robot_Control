@@ -29,9 +29,9 @@ odom0_config: [false, false, false,
 odom1_config: [false, false, false, 
                false, false, false, 
                true,  true,  false, 
-               false, false, true,  # select the giroscope along gravity
-               false, false, false] # use the x acceleration? But it is non zero due to orientation
-
+               false, false, true,  
+               false, false, false]
+               
 # if more than 1 source gives "absolute data (position/orientation)", then put just 1 and the others in differential=true mode
                                    
 odom0_queue_size: 12
@@ -41,7 +41,7 @@ odom1_queue_size:  1
 # process_noise_covariance: 
 # In general, the larger the value for Q relative to the variance for a given variable in an input message, the faster the filter will converge to the value in the measurement.
 
-rocess_noise_covariance: [1e-6, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+process_noise_covariance: [1e-6, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,    1e-6, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,    0,    1e-6, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
                            0,    0,    0,    1e-6, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,

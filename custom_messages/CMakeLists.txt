@@ -54,6 +54,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   ReactJoystick.msg
+  RobotOdometry.msg
 #   Message1.msg
 #   Message2.msg
 )

@@ -6,7 +6,7 @@
 <!-- arg to define the localization mode -->
 
 <arg name="use_robot_local" default="false"/>   <!-- use robot_localization pkg -->
-<arg name="load_map"        default="true"/>    <!-- load (vs. create) the map -->
+<arg name="load_map"        default="false"/>    <!-- load (vs. create) the map -->
 <arg name="start_rviz"      default="true"/>    <!-- locally start rviz -->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -17,7 +17,7 @@
 <include file="$(find state_machine)/launch/filter_imu.launch"/>        <!-- imu filter -->
 
 <include file="$(find state_machine)/launch/sm_startup.launch">         <!-- state machine -->
-	<arg name="use_local_joy" 	value="true"/>
+	<arg name="use_local_joy" 	value="false"/>
 	<arg name="enable_lidar" 	value="false"/>
 	<arg name="max_lin_vel"		value="0.2500"/>
 	<arg name="min_lin_vel"		value="-0.1000"/>

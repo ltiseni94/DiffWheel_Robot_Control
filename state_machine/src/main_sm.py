@@ -130,7 +130,7 @@ def callback(data):
     else:
         r1_new = data.buttons[5]
         l1_new = data.buttons[4]
-        Triangle_new=data.buttons[2]
+        Triangle_new = data.buttons[2]
     if r1_new > r1:
         state_mode = (state_mode + 1) % 3
     if l1_new > l1:
